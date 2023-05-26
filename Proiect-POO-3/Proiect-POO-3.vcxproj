@@ -127,7 +127,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Id_Manager.cpp" />
+    <ClCompile Include="Macros.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Proiect-POO-3.cpp" />
+    <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="Vec2.cpp" />
+    <ClCompile Include="Vec3.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Enemy.hpp" />
+    <ClInclude Include="Entity.hpp" />
+    <ClInclude Include="Exception.hpp" />
+    <ClInclude Include="Id_Manager.hpp" />
+    <ClInclude Include="Macros.hpp" />
+    <ClInclude Include="Player.hpp" />
+    <ClInclude Include="Renderer.hpp" />
+    <ClInclude Include="Vec2.hpp" />
+    <ClInclude Include="Vec3.hpp" />
+    <ClInclude Include="World.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
