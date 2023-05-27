@@ -133,8 +133,8 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Proiect-POO-3.cpp" />
     <ClCompile Include="Renderer.cpp" />
-    <ClCompile Include="Vec2.cpp" />
-    <ClCompile Include="Vec3.cpp" />
+    <ClCompile Include="Vec2.cpp.hpp" />
+    <ClCompile Include="Vec3.cpp.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Enemy.hpp" />

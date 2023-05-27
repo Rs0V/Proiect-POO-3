@@ -33,10 +33,10 @@
     <ClCompile Include="Renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Vec2.cpp">
+    <ClCompile Include="Vec2.cpp.hpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Vec3.cpp">
+    <ClCompile Include="Vec3.cpp.hpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
