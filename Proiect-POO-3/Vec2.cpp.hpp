@@ -1,6 +1,5 @@
 
 #include "Vec2.hpp"
-
 #include "Exception.hpp"
 
 template<typename T>

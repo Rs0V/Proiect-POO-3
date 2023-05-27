@@ -5,19 +5,27 @@
 
 #include "Macros.hpp"
 #include "World.hpp"
-#include "Player.hpp"
-#include "Enemy.hpp"
+#include "Entity.hpp"
 
 _system Renderer
 {
-	static std::vector<std::vector<char>> buffer;
+	std::vector<std::vector<char>> buffer;
+	static unique(Renderer) renderer;
+
+	Renderer(const int screenWidth, const int screenHeight)
+		:
+		buffer(screenHeight, std::vector<char>(screenWidth, ' '))
+	{}
+
 public:
-	virtual ~Renderer() = 0;
+	Renderer(const Renderer& other) = delete;
+	Renderer& operator=(const Renderer& other) = delete;
 
-	static void ClearBuffer();
-	static void Render(const s_ptr(World)& world, const u_ptr(Player)& player, const std::vector<s_ptr(Entity)>& entities);
+	static void Init(const int screenWidth, const int screenHeight);
+	static unique(Renderer)& GetInst();
+
+	void ClearBuffer();
+	void Render(const std::vector<shared(Entity)>& entities);
 };
-
-inline Renderer::~Renderer() = default;
 
 #endif // !RENDERER

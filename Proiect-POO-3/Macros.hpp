@@ -10,14 +10,14 @@
 #define interface class
 #define _system class
 
-#define u_ptr(type) std::unique_ptr<type>
-#define u_make(type) std::make_unique<type>
+#define unique(type) std::unique_ptr<type>
+#define umake(type) std::make_unique<type>
 
-#define s_ptr(type) std::shared_ptr<type>
-#define s_make(type) std::make_shared<type>
+#define shared(type) std::shared_ptr<type>
+#define smake(type) std::make_shared<type>
 
 extern std::random_device rd;
-extern std::mt19937 rng;
+extern std::mt19937;
 
 #define rint(min, max) std::uniform_int_distribution<int>(min, max)(rng)
 #define rdouble(min, max) std::uniform_real_distribution<double>(min, max)(rng)

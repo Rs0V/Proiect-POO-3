@@ -2,7 +2,24 @@
 #include "Renderer.hpp"
 #include <iostream>
 
-std::vector<std::vector<char>> Renderer::buffer;
+unique(Renderer) renderer = nullptr;
+
+void Init(const int screenWidth, const int screenHeight)
+{
+	if (renderer == nullptr) {
+		renderer = umake(Renderer)(screenWidth, screenHeight);
+		return;
+	}
+	throw multiple_singletons_err("Renderer");
+}
+
+unique(Renderer)& GetInst()
+{
+	if (renderer) {
+		return renderer;
+	}
+	throw uninitialized_singleton("Renderer");
+}
 
 template<typename T>
 std::ostream& operator<<(std::ostream& os, const std::vector<T>& v) {
@@ -20,16 +37,11 @@ void Renderer::ClearBuffer()
 	}
 }
 
-void Renderer::Render(const s_ptr(World)& world, const u_ptr(Player)& player, const std::vector<s_ptr(Entity)>& entities)
+void Renderer::Render(const std::vector<shared(Entity)>& entities)
 {
-	static bool once = [&]() {
-		buffer.resize(world->GetDim().y_, std::vector<char>(world->GetDim().x_, ' '));
-		return true;
-	}();
 	ClearBuffer();
-	buffer[player->GetPos().y_][player->GetPos().x_] = '@';
 	for (auto& entity : entities) {
-		buffer[entity->GetPos().y_][entity->GetPos().x_] = '$';
+		buffer[entity->GetPos().y_][entity->GetPos().x_] = *entity;
 	}
-	std::cout << buffer;
+	std::cout << buffer << std::flush;
 }
