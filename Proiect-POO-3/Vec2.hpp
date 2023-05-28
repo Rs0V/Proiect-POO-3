@@ -4,7 +4,9 @@
 #define VEC2
 
 #include <iostream>
+#include <math.h>
 #include "Macros.hpp"
+#include "Exception.hpp"
 
 template<typename T = double>
 class Vec2
@@ -25,11 +27,6 @@ public:
 	Vec2<T>& operator=(const Vec2<T>& other);
 	Vec2<T>& operator=(Vec2<T>&& other) noexcept;
 
-	friend std::istream& operator>>(std::istream& is, Vec2<T>& me)
-	{
-		is >> me.x >> me.y;
-		return is;
-	}
 	friend std::ostream& operator<<(std::ostream& os, const Vec2<T>& me)
 	{
 		os << "x: " << me.x << " | y: " << me.y;
@@ -58,19 +55,18 @@ public:
 	bool operator==(const Vec2<T>& other) const;
 	bool operator!=(const Vec2<T>& other) const;
 	bool operator!() const;
+	operator bool() const;
 
 	bool operator>(const Vec2<T>& other) const;
 	bool operator<(const Vec2<T>& other) const;
 	bool operator<=(const Vec2<T>& other) const;
 	bool operator>=(const Vec2<T>& other) const;
 
-	operator bool() const;
-
 	void set_x(const T _x);
 	void set_y(const T _y);
 
 	virtual double length() const;
-	virtual void normalize();
+	virtual Vec2<T>& normalize();
 	virtual Vec2<T> normalized() const;
 
 	double dot_prod(const Vec2<T>& other);
@@ -86,7 +82,6 @@ typedef Vec2<int> IVec2;
 
 
 
-#include "Exception.hpp"
 
 template<typename T>
 Vec2<T>::Vec2(const T nr)
@@ -200,6 +195,12 @@ bool Vec2<T>::operator!() const
 }
 
 template<typename T>
+Vec2<T>::operator bool() const
+{
+	return (x and y);
+}
+
+template<typename T>
 bool Vec2<T>::operator>(const Vec2<T>& other) const
 {
 	return (length() > other.length());
@@ -214,30 +215,22 @@ bool Vec2<T>::operator<(const Vec2<T>& other) const
 template<typename T>
 bool Vec2<T>::operator<=(const Vec2<T>& other) const
 {
-	return (length() <= other.length());
+	return !(length() > other.length());
 }
 
 template<typename T>
 bool Vec2<T>::operator>=(const Vec2<T>& other) const
 {
-	return (length() >= other.length());
+	return !(length() < other.length());
 }
 
 template<typename T>
-Vec2<T>::operator bool() const
-{
-	return (x != 0 and y != 0);
-}
-
-template<typename T>
-void Vec2<T>::set_x(const T _x)
-{
+void Vec2<T>::set_x(const T _x) {
 	x = _x;
 }
 
 template<typename T>
-void Vec2<T>::set_y(const T _y)
-{
+void Vec2<T>::set_y(const T _y) {
 	y = _y;
 }
 
@@ -248,13 +241,15 @@ double Vec2<T>::length() const
 }
 
 template<typename T>
-void Vec2<T>::normalize()
+Vec2<T>& Vec2<T>::normalize()
 {
 	double len = length();
 	if (len == 0)
 		throw normalize_by_zero();
 	x /= len;
 	y /= len;
+
+	return *this;
 }
 
 template<typename T>
@@ -269,5 +264,5 @@ Vec2<T> Vec2<T>::normalized() const
 template<typename T>
 double Vec2<T>::dot_prod(const Vec2<T>& other)
 {
-	return this->x * other.x + this->y * other.y;
+	return x * other.x + y * other.y;
 }

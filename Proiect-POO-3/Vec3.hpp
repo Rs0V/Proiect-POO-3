@@ -24,12 +24,6 @@ public:
 	Vec3<T>& operator=(const Vec3<T>& other);
 	Vec3<T>& operator=(Vec3<T>&& other) noexcept;
 
-	friend std::istream& operator>>(std::istream& is, Vec3<T>& me)
-	{
-		is >> me.x >> me.y >> me.z;
-		return is;
-	}
-
 	friend std::ostream& operator<<(std::ostream& os, const Vec3<T>& me)
 	{
 		os << "x: " << me.x << " | y: " << me.y << " | z: " << me.z;
@@ -59,20 +53,17 @@ public:
 	bool operator==(const Vec3<T>& other) const;
 	bool operator!=(const Vec3<T>& other) const;
 	bool operator!() const;
+	operator bool() const;
 
 	bool operator>(const Vec3<T>& other) const;
 	bool operator<(const Vec3<T>& other) const;
 	bool operator<=(const Vec3<T>& other) const;
 	bool operator>=(const Vec3<T>& other) const;
 
-	operator bool() const;
-
-	void set_x(const T _x);
-	void set_y(const T _y);
 	void set_z(const T _z);
 
 	double length() const override;
-	void normalize() override;
+	Vec3<T>& normalize() override;
 	Vec3<T> normalized() const override;
 	double dot_prod(const Vec3<T>& other);
 	Vec3<T> cross_prod(const Vec3<T>& other);
@@ -87,9 +78,6 @@ typedef Vec3<int> IVec3;
 //////////////////////////////////////////////////////////////////////////////////////////
 
 
-
-#include "Vec3.hpp"
-#include "Exception.hpp"
 
 template<typename T>
 Vec3<T>::Vec3(const T nr)
@@ -218,6 +206,12 @@ bool Vec3<T>::operator!() const
 }
 
 template<typename T>
+Vec3<T>::operator bool() const
+{
+	return (this->x != 0 and this->y != 0 and this->z != 0);
+}
+
+template<typename T>
 bool Vec3<T>::operator>(const Vec3<T>& other) const
 {
 	return (length() > other.length());
@@ -232,31 +226,13 @@ bool Vec3<T>::operator<(const Vec3<T>& other) const
 template<typename T>
 bool Vec3<T>::operator<=(const Vec3<T>& other) const
 {
-	return (length() <= other.length());
+	return !(length() > other.length());
 }
 
 template<typename T>
 bool Vec3<T>::operator>=(const Vec3<T>& other) const
 {
-	return (length() >= other.length());
-}
-
-template<typename T>
-Vec3<T>::operator bool() const
-{
-	return (this->x != 0 and this->y != 0 and this->z != 0);
-}
-
-template<typename T>
-void Vec3<T>::set_x(const T _x)
-{
-	this->x = _x;
-}
-
-template<typename T>
-void Vec3<T>::set_y(const T _y)
-{
-	this->y = _y;
+	return !(length() < other.length());
 }
 
 template<typename T>
@@ -272,7 +248,7 @@ double Vec3<T>::length() const
 }
 
 template<typename T>
-void Vec3<T>::normalize()
+Vec3<T>& Vec3<T>::normalize()
 {
 	double len = length();
 	if (len == 0)
@@ -280,6 +256,8 @@ void Vec3<T>::normalize()
 	this->x /= len;
 	this->y /= len;
 	this->z /= len;
+
+	return *this;
 }
 
 template<typename T>

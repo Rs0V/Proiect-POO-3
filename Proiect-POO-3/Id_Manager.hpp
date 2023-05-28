@@ -11,14 +11,23 @@
 
 class Id_Manager
 {
-	static std::vector<int64_t> used_ids;
+	std::vector<ID> used_ids;
+	static Id_Manager* id_manager;
 
+	Id_Manager() = default;
+	
 public:
-	virtual ~Id_Manager() = 0;
+	/*~Id_Manager() {
+		if (id_manager != nullptr)
+			delete id_manager;
+	}*/
 
-	static void Mark_Id(const ID id);
+	Id_Manager(const Id_Manager& other) = delete;
+	Id_Manager& operator=(const Id_Manager& other) = delete;
+
+	static Id_Manager& GetInst();
+
+	void Mark_Id(const ID id);
 };
-
-inline Id_Manager::~Id_Manager() = default;
 
 #endif // !ID_MANAGER

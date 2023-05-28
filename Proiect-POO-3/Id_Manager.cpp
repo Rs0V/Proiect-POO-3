@@ -1,9 +1,17 @@
 
 #include "Id_Manager.hpp"
 
-std::vector<int64_t> Id_Manager::used_ids;
+Id_Manager* Id_Manager::id_manager = nullptr;
 
-void Id_Manager::Mark_Id(const int64_t id)
+Id_Manager& Id_Manager::GetInst()
+{
+	if (id_manager == nullptr) {
+		id_manager = new Id_Manager();
+	}
+	return *id_manager;
+}
+
+void Id_Manager::Mark_Id(const ID id)
 {
 	switch (used_ids.size()) {
 	case 0:

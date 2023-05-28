@@ -15,12 +15,13 @@ class Renderer
 		:
 		buffer(screenHeight, std::vector<char>(screenWidth, ' '))
 	{}
-	~Renderer() {
-		if(renderer != nullptr)
-			delete renderer;
-	}
 
 public:
+	/*~Renderer() {
+		if (renderer != nullptr)
+			delete renderer;
+	}*/
+
 	Renderer(const Renderer& other) = delete;
 	Renderer& operator=(const Renderer& other) = delete;
 
