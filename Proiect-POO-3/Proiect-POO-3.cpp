@@ -1,27 +1,24 @@
 
 #include "Player.hpp"
 #include "Enemy.hpp"
-
 #include "Exception.hpp"
-#include "World.hpp"
 #include "Renderer.hpp"
 
 int main()
 {
 	try {
-		s_ptr(World) myWorld = s_make(World)(Vec3(120, 30, 10000));
+		Renderer::GetInst(120, 30);
 
-		Player::Stats ps(10, 100, 10, 3, 8);
+		shared(Player) player = smake(Player)(0, "Player", IVec2(90, 20));
+		shared(Enemy) enemy = smake(Enemy)(Enemy_Factory::grunt(1, "Enemy", IVec2(60, 10)));
 
-		u_ptr(Player) player = u_make(Player)(0, myWorld, "Player", Vec3(90, 20, 10), ps);
-		u_ptr(Enemy) enemy = u_make(Enemy)(1, myWorld, "Enemy", Vec3(40, 10, 10), 1, 100, 8);
-
-		std::vector<s_ptr(Enemy)> enemies;
-		enemies.push_back(std::move(enemy));
-
-		std::vector<s_ptr(Entity)> enemies_proxy;
-		for (int i = 0; i < enemies.size(); ++i)
-			enemies_proxy.push_back(std::static_pointer_cast<Entity>(enemies[i]));
+		std::vector<shared(Entity)> entities;
+		std::vector<shared(Entity)> enemies;
+		// PUSH ENTITIES
+		entities.push_back(player);
+		entities.push_back(enemy);
+		// PUSH ENEMIES
+		enemies.push_back(enemy);
 
 		bool run = true;
 		time_point t0 = time_now;
@@ -34,38 +31,28 @@ int main()
 			time_delta delta = d1 - d0;
 			d0 = d1;
 
-			if (player != nullptr) {
-				if (player->Alive()) {
-					player->Input(delta.count(), enemies_proxy);
-				}
+			if (player) {
+				if (*player)
+					player->Input(delta.count(), enemies);
 				else
 					player.reset();
 			}
-			for (int i = 0; i < enemies.size(); ++i)
-				if (enemies[i] != nullptr)
-					if (enemies[i]->Alive() and player != nullptr and player->Alive())
-						enemies[i]->Attack(*player);
-					else
-					{
-						enemies[i].reset();
-						enemies.erase(enemies.begin() + i);
-						enemies_proxy[i].reset();
-						enemies_proxy.erase(enemies_proxy.begin() + i);
+			for (auto& enemy : enemies)
+				if (enemy) {
+					if (*enemy and player) {
+						enemy->Move(delta.count(), *player);
+						enemy->Attack(*player);
 					}
+					else
+						enemy.reset();
+				}
 
-			if (player == nullptr or enemies_proxy.size() == 0)
+			if (bool(*player) == false)
 				run = false;
 
-			if (player != nullptr) {
-				if (player->Alive()) {
-					Renderer::Render(myWorld, player, enemies_proxy);
-				}
-			}
+			Renderer::GetInst().Render(entities);
 		}
 		time_point t1 = time_now;
-		player.reset();
-		enemy.reset();
-
 		time_delta delta = t1 - t0;
 		std::cout << "\n>>> Game ran for " << delta.count() << "s\n\n";
 	}

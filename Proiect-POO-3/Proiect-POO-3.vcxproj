@@ -128,13 +128,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Id_Manager.cpp" />
     <ClCompile Include="Macros.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Proiect-POO-3.cpp" />
     <ClCompile Include="Renderer.cpp" />
-    <ClCompile Include="Vec2.cpp.hpp" />
-    <ClCompile Include="Vec3.cpp.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Enemy.hpp" />
@@ -144,9 +143,9 @@
     <ClInclude Include="Macros.hpp" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="Renderer.hpp" />
+    <ClInclude Include="Stats.hpp" />
     <ClInclude Include="Vec2.hpp" />
     <ClInclude Include="Vec3.hpp" />
-    <ClInclude Include="World.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />

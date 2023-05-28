@@ -4,3 +4,5 @@
 #define u_ptr(type)
 #define _system
 #define unique(type)
+#define blueprint
+#define process

@@ -1,3 +1,4 @@
+
 #pragma once
 #ifndef ENEMY
 #define ENEMY
@@ -7,34 +8,42 @@
 class Enemy : public Entity
 {
 public:
-	Enemy(const int64_t _id,
-		const s_ptr(World) _world,
-		const std::string _name = "Enemy",
-		const Vec3 _pos = Vec3(),
-		const int _speed = 1,
-		const int _hp = 100,
-		const int _dmg = 1);
-	Enemy(const Enemy& other);
-	Enemy(Enemy&& other) noexcept;
+	Enemy(const ID _id, const std::string _name = "Enemy", const IVec2 _pos = IVec2());
 	~Enemy() override;
 
-	Enemy& operator=(const Enemy& other);
-	Enemy& operator=(Enemy&& other) noexcept;
+	Enemy& Move(const double delta_time, const Entity& player) override;
 
-	friend std::istream& operator>>(std::istream& is, Enemy& me);
-	friend std::ostream& operator<<(std::ostream& os, const Enemy& me);
-
-	bool operator==(const Enemy& other) const;
-	bool operator!=(const Enemy& other) const;
-	bool operator!() const;
-
-	operator bool() const;
-
-	Vec3 GetPos() override;
-	void Move(const double delta_time) override;
-	void Attack(Entity& other) const override;
-	void TakeDamage(const int _dmg) override;
-	bool Alive() const override;
+	friend class Enemy_Factory;
 };
+
+class Enemy_Factory
+{
+public:
+	virtual ~Enemy_Factory() = 0;
+
+	static Enemy grunt(const ID _id, const std::string _name = "Enemy", const IVec2 _pos = IVec2())
+	{
+		Enemy enemy(_id, _name, _pos);
+		enemy.stats = Stats_Factory::grunt();
+		enemy.sprite = 'o';
+		return enemy;
+	};
+	static Enemy elite(const ID _id, const std::string _name = "Enemy", const IVec2 _pos = IVec2())
+	{
+		Enemy enemy(_id, _name, _pos);
+		enemy.stats = Stats_Factory::elite();
+		enemy.sprite = '*';
+		return enemy;
+	};
+	static Enemy hunter(const ID _id, const std::string _name = "Enemy", const IVec2 _pos = IVec2())
+	{
+		Enemy enemy(_id, _name, _pos);
+		enemy.stats = Stats_Factory::hunter();
+		enemy.sprite = 'V';
+		return enemy;
+	};
+};
+
+inline Enemy_Factory::~Enemy_Factory() {}
 
 #endif // !ENEMY

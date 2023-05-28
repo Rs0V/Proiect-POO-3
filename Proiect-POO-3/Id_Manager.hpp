@@ -9,14 +9,14 @@
 #include "Exception.hpp"
 #include "Macros.hpp"
 
-_system Id_Manager
+class Id_Manager
 {
 	static std::vector<int64_t> used_ids;
 
 public:
 	virtual ~Id_Manager() = 0;
 
-	static void Mark_Id(const int64_t id);
+	static void Mark_Id(const ID id);
 };
 
 inline Id_Manager::~Id_Manager() = default;

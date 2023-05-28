@@ -1,3 +1,4 @@
+
 #pragma once
 #ifndef MACROS
 #define MACROS
@@ -7,8 +8,6 @@
 #include <chrono>
 
 #define readonly const&
-#define interface class
-#define _system class
 
 #define unique(type) std::unique_ptr<type>
 #define umake(type) std::make_unique<type>
@@ -17,7 +16,7 @@
 #define smake(type) std::make_shared<type>
 
 extern std::random_device rd;
-extern std::mt19937;
+extern std::mt19937 rng;
 
 #define rint(min, max) std::uniform_int_distribution<int>(min, max)(rng)
 #define rdouble(min, max) std::uniform_real_distribution<double>(min, max)(rng)
@@ -32,11 +31,6 @@ T lerp(T min, T max, double amount)
 	return T(min + (max - min) * amount);
 }
 
-#define elif else if
-
-#define match(var_name) { auto __this = var_name;
-#define ioccur(value) if (__this == value)
-#define occur(value) elif (__this == value)
-#define then else
+typedef int64_t ID;
 
 #endif // !MACROS

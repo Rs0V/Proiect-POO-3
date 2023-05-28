@@ -65,40 +65,4 @@ public:
 	}
 };
 
-class multiple_singletons_err : public my_exception
-{
-	std::string info;
-
-public:
-	multiple_singletons_err(const std::string& _info)
-		:
-		info(_info)
-	{
-		std::ostringstream oss;
-		oss << "Multiple instances of the " << info << " singleton are being created!";
-		info = oss.str();
-	}
-	const char* what() const noexcept override {
-		return info.c_str();
-	}
-};
-
-class uninitialized_singleton : public my_exception
-{
-	std::string info;
-
-public:
-	uninitialized_singleton(const std::string& _info)
-		:
-		info(_info)
-	{
-		std::ostringstream oss;
-		oss << info << " singleton not initialized before use!";
-		info = oss.str();
-	}
-	const char* what() const noexcept override {
-		return info.c_str();
-	}
-};
-
 #endif // !EXCEPTION

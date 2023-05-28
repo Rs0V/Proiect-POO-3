@@ -1,36 +1,52 @@
+
 #pragma once
 #ifndef ENTITY
 #define ENTITY
 
 #include <string>
 
-#include "Vec3.hpp"
-#include "World.hpp"
+#include "Vec2.hpp"
+#include "Stats.hpp"
+#include "Id_Manager.hpp"
 
-interface Entity
+class Entity
 {
 protected:
-	int64_t id;
+	ID id;
 	std::string name;
 
-	s_ptr(World) world;
+	IVec2 position;
+	Stats stats;
 
-	Vec3 position;
-	int speed;
-
-	int hp;
-	int damage;
+	char sprite;
 
 public:
+	Entity(const ID _id, const std::string _name, const IVec2 _pos = IVec2());
+	Entity(const Entity& other);
 	virtual ~Entity() = 0;
 
-	virtual Vec3 GetPos() = 0;
-	virtual void Move(const double delta_time) = 0;
-	virtual void Attack(Entity& other) const = 0;
-	virtual void TakeDamage(const int _dmg) = 0;
-	virtual bool Alive() const = 0;
+	Entity& operator=(const Entity& other);
+
+	bool operator==(const Entity& other) const;
+	bool operator!=(const Entity& other) const;
+	bool operator!() const;
+
+	operator bool() const;
+	operator char() const;
+
+	friend std::ostream& operator<<(std::ostream& os, const Entity& entity)
+	{
+		os << entity.name << "(#" << entity.id << "): POS(" << entity.position << ")\n\n";
+		return os;
+	}
+
+	IVec2 GetPos() const;
+	Entity& Attack(Entity& other);
+	Entity& TakeDamage(const int _dmg);
+	bool Dodged() const;
+	virtual Entity& Move(const double delta_time, const Entity& player) = 0;
 };
 
-inline Entity::~Entity() = default;
+inline Entity::~Entity() {}
 
 #endif // !ENTITY

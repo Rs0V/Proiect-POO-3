@@ -1,24 +1,16 @@
 
 #include "Renderer.hpp"
 #include <iostream>
+#include "Exception.hpp"
 
-unique(Renderer) renderer = nullptr;
+Renderer* Renderer::renderer = nullptr;
 
-void Init(const int screenWidth, const int screenHeight)
+Renderer& Renderer::GetInst(const int screenWidth, const int screenHeight)
 {
 	if (renderer == nullptr) {
-		renderer = umake(Renderer)(screenWidth, screenHeight);
-		return;
+		renderer = new Renderer(screenWidth, screenHeight);
 	}
-	throw multiple_singletons_err("Renderer");
-}
-
-unique(Renderer)& GetInst()
-{
-	if (renderer) {
-		return renderer;
-	}
-	throw uninitialized_singleton("Renderer");
+	return *renderer;
 }
 
 template<typename T>
@@ -41,7 +33,17 @@ void Renderer::Render(const std::vector<shared(Entity)>& entities)
 {
 	ClearBuffer();
 	for (auto& entity : entities) {
-		buffer[entity->GetPos().y_][entity->GetPos().x_] = *entity;
+		if (*entity) {
+			if (entity->GetPos().x_ < 0 or entity->GetPos().y_ < 0
+				or entity->GetPos().x_ > buffer[0].size() - 1
+				or entity->GetPos().y_ > buffer.size() - 1)
+			{
+				std::ostringstream oss;
+				oss << "Entity " << entity << " out of bounds!";
+				throw out_of_bounds(oss.str());
+			}
+			buffer[entity->GetPos().y_][entity->GetPos().x_] = *entity;
+		}
 	}
 	std::cout << buffer << std::flush;
 }
