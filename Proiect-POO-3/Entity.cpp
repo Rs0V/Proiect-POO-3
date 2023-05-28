@@ -1,13 +1,16 @@
 
 #include "Entity.hpp"
 
-Entity::Entity(const ID _id, const std::string _name, const IVec2 _pos)
+Entity::Entity(const ID _id, const std::string _name, const vec2 _pos)
 	:
 	name(_name),
 	position(_pos)
 {
-	Id_Manager::Mark_Id(_id);
+	Id_Manager::GetInst().Mark_Id(_id);
 	id = _id;
+
+	sprite = '|';
+	attackRadius = 10;
 }
 
 Entity::Entity(const Entity& other)
@@ -16,7 +19,8 @@ Entity::Entity(const Entity& other)
 	position(other.position),
 	id(other.id),
 	stats(other.stats),
-	sprite(other.sprite)
+	sprite(other.sprite),
+	attackRadius(other.attackRadius)
 {
 }
 
@@ -27,6 +31,7 @@ Entity& Entity::operator=(const Entity& other)
 	id = other.id;
 	stats = other.stats;
 	sprite = other.sprite;
+	attackRadius = other.attackRadius;
 
 	return *this;
 }
@@ -40,7 +45,7 @@ bool Entity::operator!=(const Entity& other) const {
 }
 
 bool Entity::operator!() const {
-	return (stats.hp <= 0);
+	return !(stats.hp > 0);
 }
 
 Entity::operator bool() const {
@@ -52,25 +57,23 @@ Entity::operator char() const
 	return sprite;
 }
 
-IVec2 Entity::GetPos() const {
+vec2 Entity::GetPos() const {
 	return position;
 }
 
-Entity& Entity::Attack(Entity& other) {
-	if ((position - other.GetPos()).length() < 3) {
+void Entity::Attack(Entity& other) {
+	if ((position - other.GetPos()).length2() < attackRadius) {
 		other.TakeDamage(stats.dmg);
 	}
-	return *this;
 }
 
-Entity& Entity::TakeDamage(const int _dmg)
+void Entity::TakeDamage(const int _dmg)
 {
 	if (stats.hp > 0 and Dodged() == false)
 	{
 		int dmgTaken = rint(_dmg - int(_dmg * 0.5), _dmg + int(_dmg * 0.5));
 		stats.hp -= dmgTaken;
 	}
-	return *this;
 }
 
 bool Entity::Dodged() const

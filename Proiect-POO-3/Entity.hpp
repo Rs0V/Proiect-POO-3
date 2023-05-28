@@ -15,13 +15,18 @@ protected:
 	ID id;
 	std::string name;
 
-	IVec2 position;
+	vec2 position;
 	Stats stats;
 
 	char sprite;
+	double attackRadius;
+
+	bool Dodged() const;
+	void TakeDamage(const int _dmg);
+	void Attack(Entity& other);
 
 public:
-	Entity(const ID _id, const std::string _name, const IVec2 _pos = IVec2());
+	Entity(const ID _id, const std::string _name, const vec2 _pos = vec2());
 	Entity(const Entity& other);
 	virtual ~Entity() = 0;
 
@@ -40,11 +45,8 @@ public:
 		return os;
 	}
 
-	IVec2 GetPos() const;
-	Entity& Attack(Entity& other);
-	Entity& TakeDamage(const int _dmg);
-	bool Dodged() const;
-	virtual Entity& Move(const double delta_time, const Entity& player) = 0;
+	vec2 GetPos() const;
+	virtual Entity& Act(const double delta_time, const slist(Entity)& targets) = 0;
 };
 
 inline Entity::~Entity() {}

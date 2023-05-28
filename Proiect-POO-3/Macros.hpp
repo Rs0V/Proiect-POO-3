@@ -6,6 +6,7 @@
 #include <memory>
 #include <random>
 #include <chrono>
+#include <vector>
 
 #define readonly const&
 
@@ -14,6 +15,9 @@
 
 #define shared(type) std::shared_ptr<type>
 #define smake(type) std::make_shared<type>
+
+#define ulist(type) std::vector<unique(type)>
+#define slist(type) std::vector<shared(type)>
 
 extern std::random_device rd;
 extern std::mt19937 rng;

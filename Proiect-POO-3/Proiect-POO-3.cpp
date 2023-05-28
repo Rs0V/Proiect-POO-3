@@ -9,47 +9,37 @@ int main()
 	try {
 		Renderer::GetInst(120, 30);
 
-		shared(Player) player = smake(Player)(0, "Player", IVec2(90, 20));
-		shared(Enemy) enemy = smake(Enemy)(Enemy_Factory::grunt(1, "Enemy", IVec2(60, 10)));
-
-		std::vector<shared(Entity)> entities;
+		std::vector<shared(Entity)> players;
 		std::vector<shared(Entity)> enemies;
-		// PUSH ENTITIES
-		entities.push_back(player);
-		entities.push_back(enemy);
-		// PUSH ENEMIES
-		enemies.push_back(enemy);
+		std::vector<shared(Entity)> entities;
+
+		players.push_back(smake(Player)(0, "Gion", vec2(60, 20)));
+
+		enemies.push_back(smake(Enemy)(Enemy_Factory::elite(1, "Vali", vec2(30, 10))));
+
+		for (auto& player : players) {
+			entities.push_back(player);
+		}
+		for (auto& enemy : enemies) {
+			entities.push_back(enemy);
+		}
+
+
 
 		bool run = true;
 		time_point t0 = time_now;
-		time_point d0;
-		time_point d1 = time_now;
-		d0 = d1;
 		while (run)
 		{
-			d1 = time_now;
-			time_delta delta = d1 - d0;
-			d0 = d1;
-
-			if (player) {
-				if (*player)
-					player->Input(delta.count(), enemies);
-				else
-					player.reset();
-			}
-			for (auto& enemy : enemies)
-				if (enemy) {
-					if (*enemy and player) {
-						enemy->Move(delta.count(), *player);
-						enemy->Attack(*player);
-					}
-					else
-						enemy.reset();
+			for (auto& player : players) {
+				if (*player) {
+					player->Act(0.3, enemies);
 				}
-
-			if (bool(*player) == false)
-				run = false;
-
+			}
+			for (auto& enemy : enemies) {
+				if (*enemy) {
+					enemy->Act(0.3, players);
+				}
+			}
 			Renderer::GetInst().Render(entities);
 		}
 		time_point t1 = time_now;

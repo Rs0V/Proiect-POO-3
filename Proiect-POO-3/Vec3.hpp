@@ -63,13 +63,15 @@ public:
 	void set_z(const T _z);
 
 	double length() const override;
+	double length2() const override;
 	Vec3<T>& normalize() override;
 	Vec3<T> normalized() const override;
 	double dot_prod(const Vec3<T>& other);
 	Vec3<T> cross_prod(const Vec3<T>& other);
 };
 
-typedef Vec3<int> IVec3;
+typedef Vec3<> vec3;
+typedef Vec3<int> ivec3;
 
 #endif // !VEC3
 
@@ -245,6 +247,12 @@ template<typename T>
 double Vec3<T>::length() const
 {
 	return std::sqrt(this->x * this->x + this->y * this->y + this->z * this->z);
+}
+
+template<typename T>
+double Vec3<T>::length2() const
+{
+	return this->x * this->x + this->y * this->y + this->z * this->z;
 }
 
 template<typename T>

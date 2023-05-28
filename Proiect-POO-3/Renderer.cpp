@@ -2,6 +2,7 @@
 #include "Renderer.hpp"
 #include <iostream>
 #include "Exception.hpp"
+#include <stdlib.h>
 
 Renderer* Renderer::renderer = nullptr;
 
@@ -39,11 +40,12 @@ void Renderer::Render(const std::vector<shared(Entity)>& entities)
 				or entity->GetPos().y_ > buffer.size() - 1)
 			{
 				std::ostringstream oss;
-				oss << "Entity " << entity << " out of bounds!";
+				oss << "Entity " << *entity << " out of bounds!";
 				throw out_of_bounds(oss.str());
 			}
-			buffer[entity->GetPos().y_][entity->GetPos().x_] = *entity;
+			buffer[int(entity->GetPos().y_)][int(entity->GetPos().x_)] = *entity;
 		}
 	}
+	std::system("cls");
 	std::cout << buffer << std::flush;
 }

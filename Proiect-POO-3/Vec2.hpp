@@ -66,13 +66,15 @@ public:
 	void set_y(const T _y);
 
 	virtual double length() const;
+	virtual double length2() const;
 	virtual Vec2<T>& normalize();
 	virtual Vec2<T> normalized() const;
 
 	double dot_prod(const Vec2<T>& other);
 };
 
-typedef Vec2<int> IVec2;
+typedef Vec2<> vec2;
+typedef Vec2<int> ivec2;
 
 #endif // !VEC2
 
@@ -238,6 +240,12 @@ template<typename T>
 double Vec2<T>::length() const
 {
 	return std::sqrt(x * x + y * y);
+}
+
+template<typename T>
+double Vec2<T>::length2() const
+{
+	return x * x + y * y;
 }
 
 template<typename T>
