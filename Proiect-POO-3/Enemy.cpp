@@ -13,12 +13,19 @@ Enemy::~Enemy()
 
 Enemy& Enemy::Act(const double delta_time, const slist(Entity)& targets)
 {
-	int chance = rint(0, 100);
-	if (chance > 10) {
-		int pick = rint(0, targets.size() - 1);
-		vec2 move = (targets[pick]->GetPos() - position).normalized() * stats.speed * delta_time;
-		position += move;
-		Attack(*targets[pick]);
+	if (stats.hp > 0)
+	{
+		int chance = rint(0, 100);
+
+		if (chance > 10) {
+			int pick = rint(0, targets.size() - 1);
+
+			if (targets.empty() == false and targets[pick] and *targets[pick]) {
+				vec2 move = (targets[pick]->GetPos() - position).normalized() * stats.speed * delta_time;
+				position += move;
+				Attack(*targets[pick]);
+			}
+		}
 	}
 	return *this;
 }

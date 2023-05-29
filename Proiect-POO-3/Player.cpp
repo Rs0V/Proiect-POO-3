@@ -22,35 +22,39 @@ Player::~Player()
 
 Player& Player::Act(const double delta_time, const std::vector<shared(Entity)>& targets)
 {
-	char input = _getch();
-
-	vec2 move;
-	switch (input)
+	if (stats.hp > 0)
 	{
-	case 'w':
-		move = vec2(0, -1);
-		move *= delta_time * stats.speed;
-		position += move;
-		break;
-	case 's':
-		move = vec2(0, 1);
-		move *= delta_time * stats.speed;
-		position += move;
-		break;
-	case 'a':
-		move = vec2(-1, 0);
-		move *= delta_time * stats.speed;
-		position += move;
-		break;
-	case 'd':
-		move = vec2(1, 0);
-		move *= delta_time * stats.speed;
-		position += move;
-		break;
-	case ' ':
-		for (auto& target : targets)
-			Attack(*target);
-		break;
+		char input = _getch();
+
+		vec2 move;
+		switch (input)
+		{
+		case 'w':
+			move = vec2(0, -1);
+			move *= delta_time * stats.speed;
+			position += move;
+			break;
+		case 's':
+			move = vec2(0, 1);
+			move *= delta_time * stats.speed;
+			position += move;
+			break;
+		case 'a':
+			move = vec2(-1, 0);
+			move *= delta_time * stats.speed;
+			position += move;
+			break;
+		case 'd':
+			move = vec2(1, 0);
+			move *= delta_time * stats.speed;
+			position += move;
+			break;
+		case ' ':
+			for (auto& target : targets)
+				if(target and *target)
+					Attack(*target);
+			break;
+		}
 	}
 	return *this;
 }

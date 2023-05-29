@@ -41,7 +41,7 @@ public:
 
 	friend std::ostream& operator<<(std::ostream& os, const Entity& entity)
 	{
-		os << entity.name << "(#" << entity.id << "): POS(" << entity.position << ")\n\n";
+		os << entity.name << "(#" << entity.id << "): POS(" << entity.position << ")";
 		return os;
 	}
 
