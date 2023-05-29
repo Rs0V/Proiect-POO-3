@@ -8,7 +8,7 @@
 
 class Renderer
 {
-	std::vector<std::vector<char>> buffer;
+	matrix(char) buffer;
 	static Renderer* renderer;
 
 	Renderer(const int screenWidth, const int screenHeight)

@@ -6,3 +6,4 @@
 #define unique(type)
 #define blueprint
 #define process
+#define matrix(type)

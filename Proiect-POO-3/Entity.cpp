@@ -61,6 +61,14 @@ vec2 Entity::GetPos() const {
 	return position;
 }
 
+std::string Entity::GetName() const {
+	return name;
+}
+
+const Stats& Entity::Entity::GetStats() const {
+	return stats;
+}
+
 void Entity::Attack(Entity& other) {
 	if ((position - other.GetPos()).length2() < attackRadius) {
 		other.TakeDamage(stats.dmg);

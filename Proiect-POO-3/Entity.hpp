@@ -46,6 +46,8 @@ public:
 	}
 
 	vec2 GetPos() const;
+	std::string GetName() const;
+	const Stats& GetStats() const;
 	virtual Entity& Act(const double delta_time, const slist(Entity)& targets) = 0;
 };
 

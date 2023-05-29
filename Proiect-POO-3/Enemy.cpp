@@ -23,6 +23,8 @@ Enemy& Enemy::Act(const double delta_time, const slist(Entity)& targets)
 			if (targets.empty() == false and targets[pick] and *targets[pick]) {
 				vec2 move = (targets[pick]->GetPos() - position).normalized() * stats.speed * delta_time;
 				position += move;
+				if (position == targets[pick]->GetPos())
+					position -= move.normalized() * 2;
 				Attack(*targets[pick]);
 			}
 		}

@@ -19,6 +19,8 @@
 #define ulist(type) std::vector<unique(type)>
 #define slist(type) std::vector<shared(type)>
 
+#define matrix(type) std::vector<std::vector<type>>
+
 extern std::random_device rd;
 extern std::mt19937 rng;
 

@@ -33,21 +33,41 @@ Player& Player::Act(const double delta_time, const std::vector<shared(Entity)>& 
 			move = vec2(0, -1);
 			move *= delta_time * stats.speed;
 			position += move;
+
+			move = move.normalized() * 2;
+			for (auto& target : targets)
+				if (position == target->GetPos())
+					position -= move;
 			break;
 		case 's':
 			move = vec2(0, 1);
 			move *= delta_time * stats.speed;
 			position += move;
+
+			move = move.normalized() * 2;
+			for (auto& target : targets)
+				if (position == target->GetPos())
+					position -= move;
 			break;
 		case 'a':
 			move = vec2(-1, 0);
 			move *= delta_time * stats.speed;
 			position += move;
+
+			move = move.normalized() * 2;
+			for (auto& target : targets)
+				if (position == target->GetPos())
+					position -= move;
 			break;
 		case 'd':
 			move = vec2(1, 0);
 			move *= delta_time * stats.speed;
 			position += move;
+
+			move = move.normalized() * 2;
+			for (auto& target : targets)
+				if (position == target->GetPos())
+					position -= move;
 			break;
 		case ' ':
 			for (auto& target : targets)
